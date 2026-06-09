@@ -1,5 +1,7 @@
+#include <algorithm>
 #include <iostream>
 #include <vector>
+#include <set>
 #include <string>
 #include <fstream>
 using namespace std;
@@ -14,7 +16,9 @@ struct Buff
 vector<string> tag;
 vector<string> ruleFrom;
 vector<std::vector<Buff>> buff;
+vector<std::vector<double>> devide;
 vector<vector<pair<int, int>>> man;
+vector<int> gate;
 vector<int> sum_1;
 vector<int> sum_2;
 
@@ -28,15 +32,18 @@ void init()
     sum_1.assign(count_country, 0);
     sum_2.assign(count_country, 0);
     ruleFrom.assign(count_country, "rule.ini");
+    devide.resize(count_country);
+    buff.assign(count_country, vector<Buff>());
+    gate.assign(count_country, 5);
     for (int i = 0; i < count_country; i++)
     {
         int count_man;
-        cin >> tag[i];
-        cin >> count_man;
+        readMan >> tag[i];
+        readMan >> count_man;
         int f, s;
         while (count_man)
         {
-            cin >> f >> s;
+            readMan >> f >> s;
             if (s == 0)
             {
                 sum_1[i] += f;
@@ -51,7 +58,9 @@ void init()
             }
             count_man--;
         }
+        readMan >> gate[i];
     }
+    readMan.close();
     ifstream readExtra("extra.ini");
     string str_in;
     str_in.clear();
@@ -103,8 +112,60 @@ void init()
             }
         }
     }
+    readExtra.close();
+    for (int i = 0; i < count_country; i++)
+    {
+        ifstream readRule(ruleFrom[i]);
+        devide[i].assign(5, 0.0);
+        for (int j = 0; j < 5; j++)
+        {
+            readRule >> devide[i][j];
+        }
+    }
 }
+
+double JudgeRule()
+{
+}
+
+vector<double> allDivide;
+
+set<double> all;
+
+double divide[5];
+
+double ans = 0;
+
+int count = 0; // ans更新的次数
+
+void DFS(const int &count) // 创建枚举比例
+{
+    if (count == 5)
+    {
+        // 将divide出来
+    }
+}
+
 int main()
 {
+    for (double i = 1.0; i <= 11.0; i += 1.0)
+    {
+        if (!all.count(i / 4.0 - 0.001))
+        {
+            allDivide.push_back(i / 4.0 - 0.001);
+            all.insert(i / 4.0 - 0.001);
+        }
+        if (!all.count(i / 5.0 - 0.001))
+        {
+            allDivide.push_back(i / 5.0 - 0.001);
+            all.insert(i / 5.0 - 0.001);
+        }
+        if (!all.count(i / 6.0 - 0.001))
+        {
+            allDivide.push_back(i / 6.0 - 0.001);
+            all.insert(i / 6.0 - 0.001);
+        }
+    }
+    sort(allDivide.begin(), allDivide.end());
     init();
 }
